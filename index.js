@@ -102,7 +102,7 @@ app.post("/home",  (req, res) => {
 
 const PORT = 4000;
 app.get("/", function (request, response) {
-  response.send("🙋‍♂️, 🌏 🎊✨🤩HELLOOOO");
+  response.send("🙋‍♂️, 🌏 🎊✨🤩 Welcome To backend of Bulk Email Sending Website");
 });
 
 app.listen(PORT, () => console.log(`The server started in: ${PORT} ✨✨`));
