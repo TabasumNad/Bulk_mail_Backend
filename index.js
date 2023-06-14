@@ -1,25 +1,21 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 import cors from "cors";
-// import router from "./router/router.js"
+
 import express from "express";
 const app = express();
 import mongoose from 'mongoose';
 import nodemailer from "nodemailer";
 import {FormModel} from './models/Form.js'
 
-// import nodemailer from "nodemailer";
+
 
 
 
 
 app.use(express.json())
 app.use(cors())
-// app.use(router)
 
-// const client = new mongoose.client("mongodb://127.0.0.1:27017/form");
-// await client.connect();
-// console.log("Mongo Connected!!!");
 
 mongoose.connect("mongodb://127.0.0.1:27017/form");
 // const client=mongoose.model
@@ -52,22 +48,11 @@ app.post('/register',(req,res)=>{
 })
 
 
-// app.get("/register", (req, res)=> {
-//     FormModel.findOne({email:email})
-//     .then(form=>res.json(form))
-//     .catch(err=>res.json(err))
-
-//     // console.log(request.query);
-//     //   const movies=await getAllMovies(request.query);
-//                    console.log();
-//                     //   response.send(movies);
-      
-//     });
 
 
 
 app.get("/register", async function (req, res) {
-    // const getinfo = await FormModel.db("form").collection("forms").find({}).toArray();
+   
     const getinfo=await FormModel.find()
     console.log(getinfo)
      res.send(getinfo);
@@ -78,9 +63,7 @@ app.get("/register", async function (req, res) {
 
 app.post("/home",  (req, res) => {
 
-    // const { email } = req.body;
-    // const { sub } = req.body;
-    // const { message } = req.body;
+    
   
 
     try {
