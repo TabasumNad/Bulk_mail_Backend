@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 import nodemailer from "nodemailer";
 import {FormModel} from './models/Form.js'
 
-
+// import {router} from './routers/register.js'
 
 
 
@@ -17,12 +17,14 @@ app.use(express.json())
 app.use(cors())
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/form");
+// mongoose.connect("mongodb://127.0.0.1:27017/form");
+mongoose.connect(process.env.MONGO_URL)
+.then(() => console.log('Connected successfully!'));
 // const client=mongoose.model
 
 
 app.post("/login",(req,res)=>{
-    const {email, password}=req.body;
+    const {email,password}=req.body;
     FormModel.findOne({email:email})
     .then(user=>{
         if(user){
@@ -48,7 +50,7 @@ app.post('/register',(req,res)=>{
 })
 
 
-
+// app.use('/register',router)
 
 
 app.get("/register", async function (req, res) {
