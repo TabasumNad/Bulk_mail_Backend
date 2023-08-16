@@ -6,12 +6,13 @@ import express from "express";
 const app = express();
 import mongoose from 'mongoose';
 import nodemailer from "nodemailer";
+import bodyParser from "body-parser";
 import {FormModel} from './models/Form.js'
 
 // import {router} from './routers/register.js'
 
 
-
+app.use(bodyParser.json());
 
 app.use(express.json())
 app.use(cors())
@@ -63,43 +64,33 @@ app.get("/register", async function (req, res) {
 
 
 
-app.post("/home",  (req, res) => {
-
-    
-  
-
-    try {
-
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
                 user: process.env.EMAIL,
-                pass: process.env.PASSWORD
-            }
+                pass: process.env.PASSWORD,
+            },
         });
 
-        const mailOptions = {
-            from: process.env.EMAIL,
-            to: req.body.email,
-            subject: req.body.sub,
-            text:req.body.message
-            
-        };
+        app.post('/send-emails', async (req, res) => {
+            const { recipients, subject, message } = req.body;
 
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log("Error" + error)
-            } else {
-                console.log("Email sent:" + info.response);
-                res.status(201).json({status:201,info})
-            }
-        })
+            try {
+                const mailOptions = {
+                  from: process.env.EMAIL,
+                  to: recipients, 
+                  subject,
+                  text: message,
+                };
 
-    } catch (error) {
-        console.log("Error" + error);
-        res.status(401).json({status:401,error})
-    }
-});
+                await transporter.sendMail(mailOptions);
+                res.send({ message: 'Emails sent successfully' });
+              } catch (error) {
+                console.error('Error sending emails:', error);
+                res.status(500).send({ message: 'Error sending emails' });
+              }
+            });
+
 
 
 const PORT = 4000;
